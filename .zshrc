@@ -176,8 +176,8 @@ gpr() {
     return
   fi
   print $fg[blue]"Récupération des modifications de la PR "$fg[green]"$1"$fg[blue]" et création de la branche "$fg[green]"$2"$fg[default]
-#  git fetch origin pull/$1/head:$2
-#  git checkout $2
+  git fetch origin pull/$1/head:$2
+  git checkout $2
 }
 
 ## PR finie
