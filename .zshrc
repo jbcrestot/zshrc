@@ -112,25 +112,23 @@ cmd() {
   echo $fg[green]"  pr_over				"$fg[default]" reswitch le répo sur la branch précédante et supprime la branch de la PR"
 }
 
-## Canal TP
-clearCache() {
+## Canal TP - Symfony 2
+cc() {
     app/console ca:c --no-warmup --client="$1"
     app/console cache:warmup --client="$1"
 }
-alias cc=clearCache
 
-importTranslations() {
+importTrans() {
     app/console lexik:translations:import --force
     app/console bazinga:js-translation:dump
     cc $1
 }
-alias importTrans=importTranslations
 
 ## Git
 alias uppstream=git fetch origin && (git co $1 ||:) && (git pull origin $1 ||:)
 alias gsta="git stall"
 
-upEverything() {
+upAll() {i
   if [ $# -eq 0 ]; then
     echo "pas d'argument, default: master"
     branch="master"
@@ -145,13 +143,11 @@ upEverything() {
   git submodule foreach "git fetch origin && git checkout $branch && git pull origin $branch"
 
 }
-alias upall=upEverything
 
-recursiveBranchCreation() {
+creatAll() {
   git checkout -b $1
   git submodule foreach "git checkout -b $1"
 }
-alias createAll=recursiveBranchCreation
 
 switchIfExist() {
   if git branch | grep -q $1; then
@@ -175,15 +171,14 @@ if git branch | grep -q $1; then
 }
 
 ## recup des modifs d'une PR
-pr() {
+gpr() {
   print "Récupération des modifications de la PR $1 et création de la branche $2"
   git fetch origin pull/$1/head:$2
   git checkout $2
 }
-alias gpr=pr
 
 ## PR finie
-pr_over() {
+gpro() {
   local BRANCH=$(git symbolic-ref HEAD --short 2> /dev/null)
   if [[ ! -z "$BRANCH" ]] then
     print "Pull Request finie delete la branch $BRANCH"
@@ -194,7 +189,7 @@ pr_over() {
   fi
 }
 
-bootClient() {
+boot() {
   echo "bootstraping the app for $1"
   fromDir=$(pwd)
   nmp
@@ -203,4 +198,3 @@ bootClient() {
   clearCache $1
   cd $fromDir
 }
-alias boot=bootClient
