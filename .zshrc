@@ -128,7 +128,7 @@ importTrans() {
 alias uppstream=git fetch origin && (git co $1 ||:) && (git pull origin $1 ||:)
 alias gsta="git stall"
 
-upAll() {i
+upAll() {
   if [ $# -eq 0 ]; then
     echo "pas d'argument, default: master"
     branch="master"
@@ -141,7 +141,6 @@ upAll() {i
   git checkout $branch
   git pull origin $branch
   git submodule foreach "git fetch origin && git checkout $branch && git pull origin $branch"
-
 }
 
 creatAll() {
@@ -172,9 +171,13 @@ if git branch | grep -q $1; then
 
 ## recup des modifs d'une PR
 gpr() {
-  print "Récupération des modifications de la PR $1 et création de la branche $2"
-  git fetch origin pull/$1/head:$2
-  git checkout $2
+  if [ $# -lt 2 ]; then
+    echo $fg[green]"grp "$fg[blue]"PR_number" "branch_name" $fg[default]"où PR_number est le numéro de Pull Request et branch_name le nom de la branch qui sera créé"
+    return
+  fi
+  print $fg[blue]"Récupération des modifications de la PR "$fg[green]"$1"$fg[blue]" et création de la branche "$fg[green]"$2"$fg[default]
+#  git fetch origin pull/$1/head:$2
+#  git checkout $2
 }
 
 ## PR finie
