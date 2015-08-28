@@ -105,7 +105,7 @@ cmd() {
 
   echo ""
   echo $fg[yellow]" git"
-  echo $fg[green]"  upall branch[default:master]		"$fg[default]" switch tout le projet sur la br branch"
+  echo $fg[green]"  upall branch[default:dev]		"$fg[default]" switch tout le projet sur la br branch"
   echo $fg[green]"  createAll branch			"$fg[default]" créé la branch \"branch\" récursivement sur tous les repos"
   echo $fg[green]"  switchAll branch			"$fg[default]" switch sur la branch \"branch\" si elle existe récusrivement sur tous les repos"
   echo $fg[green]"  gpr numéroPR nomBranch		"$fg[default]" switch un repo sur la pr \"numéroPR\" en créant la branch \"nomBranch\""
@@ -130,8 +130,8 @@ alias gsta="git stall"
 
 upAll() {
   if [ $# -eq 0 ]; then
-    echo "pas d'argument, default: master"
-    branch="master"
+    echo "pas d'argument, default: dev"
+    branch="dev"
   else
     branch=$1
   fi
@@ -142,8 +142,9 @@ upAll() {
   git pull origin $branch
   git submodule foreach "git fetch origin && git checkout $branch && git pull origin $branch"
 }
+alias upall=upAll
 
-creatAll() {
+createAll() {
   git checkout -b $1
   git submodule foreach "git checkout -b $1"
 }
@@ -172,12 +173,13 @@ if git branch | grep -q $1; then
 ## recup des modifs d'une PR
 gpr() {
   if [ $# -lt 2 ]; then
-    echo $fg[green]"grp "$fg[blue]"PR_number" "branch_name" $fg[default]"où PR_number est le numéro de Pull Request et branch_name le nom de la branch qui sera créé"
+    echo $fg[red]"wrong number of arguments"
+    echo $fg[green]"grp "branch_name" "$fg[blue]"PR_number" $fg[default]"où branch_name le nom de la branch qui sera créé et PR_number est le numéro de Pull Request"
     return
   fi
-  print $fg[blue]"Récupération des modifications de la PR "$fg[green]"$1"$fg[blue]" et création de la branche "$fg[green]"$2"$fg[default]
-  git fetch origin pull/$1/head:$2
-  git checkout $2
+  print $fg[blue]"Récupération des modifications de la PR "$fg[green]"$2"$fg[blue]" et création de la branche "$fg[green]"$1"$fg[default]
+  git fetch origin pull/$2/head:$1
+  git checkout $1
 }
 
 ## PR finie
@@ -198,6 +200,24 @@ boot() {
   nmp
   app/console assets:install --client="$1"
   app/console assetic:dump --client="$1"
-  clearCache $1
+  cc $1
   cd $fromDir
+}
+
+sulfa() {
+
+  print "     _______"
+  print "    /  ____/\\"
+  print "   /  /_____/"
+  print "  /____   /\\"
+  print "  \\___/  / /"
+  print " /______/ /"
+  print " \\______/"
+
+  print "
+ ______
+/\     \
+
+"
+
 }
