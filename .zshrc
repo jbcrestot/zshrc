@@ -1,10 +1,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/home/jbcrestot/.oh-my-zsh
 
-if [[ -r ~/.local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh ]]; then
-    source ~/.local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
-fi
-
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -56,8 +52,11 @@ ZSH_THEME="agnoster"
 plugins=(git)
 
 # User configuration
+## bufix for PhpStorm (keyboard freeze) https://youtrack.jetbrains.com/issue/IDEA-78860
+IBUS_ENABLE_SYNC_MODE=1
 
-export PATH="/home/jbcrestot/.rvm/gems/ruby-2.2.1/bin:/home/jbcrestot/.rvm/gems/ruby-2.2.1@global/bin:/home/jbcrestot/.rvm/rubies/ruby-2.2.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/jvm/jdk1.8.0_51/bin:/usr/lib/jvm/jdk1.8.0_51/db/bin:/usr/lib/jvm/jdk1.8.0_51/jre/bin:/home/jbcrestot/.rvm/bin:/home/jbcrestot/.rvm/bin:/home/jbcrestot/.local/bin:$PATH"
+
+export PATH="/home/jbcrestot/.rvm/gems/ruby-2.2.1/bin:/home/jbcrestot/.rvm/gems/ruby-2.2.1@global/bin:/home/jbcrestot/.rvm/rubies/ruby-2.2.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games::/home/jbcrestot/.rvm/bin:/home/jbcrestot/.rvm/bin:/home/jbcrestot/.local/bin:$HOME/.local/bin:$PATH"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -96,6 +95,7 @@ cmd() {
   echo $fg[green]"  ww					"$fg[default]"va dans le dossier /srv/www/"
   echo $fg[green]"  nmp					"$fg[default]"va dans le dossier /srv/www/Nmp/"
   echo $fg[green]"  vh					"$fg[default]"va dans le dossier /etc/apache2/sites-available/"
+  echo $fg[green]"  debugIbus				"$fg[default]"Tapez cette commande lorsque le clavier ne repond plus (phpstorm)"
   
   echo ""
   echo $fg[yellow]" Symfony2"
@@ -109,7 +109,7 @@ cmd() {
   echo $fg[green]"  createAll branch			"$fg[default]" créé la branch \"branch\" récursivement sur tous les repos"
   echo $fg[green]"  switchAll branch			"$fg[default]" switch sur la branch \"branch\" si elle existe récusrivement sur tous les repos"
   echo $fg[green]"  gpr numéroPR nomBranch		"$fg[default]" switch un repo sur la pr \"numéroPR\" en créant la branch \"nomBranch\""
-  echo $fg[green]"  pr_over				"$fg[default]" reswitch le répo sur la branch précédante et supprime la branch de la PR"
+  echo $fg[green]"  gpro				"$fg[default]" reswitch le répo sur la branch précédante et supprime la branch de la PR"
 }
 
 ## Canal TP - Symfony 2
@@ -202,6 +202,11 @@ boot() {
   app/console assetic:dump --client="$1"
   cc $1
   cd $fromDir
+}
+
+debugIbus() {
+  ibus-daemon -rd
+  setxkbmap fr
 }
 
 sulfa() {
