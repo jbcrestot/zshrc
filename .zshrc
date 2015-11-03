@@ -53,8 +53,7 @@ plugins=(git)
 
 # User configuration
 ## bufix for PhpStorm (keyboard freeze) https://youtrack.jetbrains.com/issue/IDEA-78860
-IBUS_ENABLE_SYNC_MODE=1
-
+export IBUS_ENABLE_SYNC_MODE=1
 
 export PATH="/home/jbcrestot/.rvm/gems/ruby-2.2.1/bin:/home/jbcrestot/.rvm/gems/ruby-2.2.1@global/bin:/home/jbcrestot/.rvm/rubies/ruby-2.2.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games::/home/jbcrestot/.rvm/bin:/home/jbcrestot/.rvm/bin:/home/jbcrestot/.local/bin:$HOME/.local/bin:$PATH"
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -206,23 +205,13 @@ boot() {
 
 debugIbus() {
   ibus-daemon -rd
-  setxkbmap fr
+  echo "plz type the following :"
+  echo "setxkbmap fr"|xclip
+  echo "use mouse middle click"
 }
 
-sulfa() {
+rmcms() {
 
-  print "     _______"
-  print "    /  ____/\\"
-  print "   /  /_____/"
-  print "  /____   /\\"
-  print "  \\___/  / /"
-  print " /______/ /"
-  print " \\______/"
-
-  print "
- ______
-/\     \
-
-"
-
+  rm -rf /srv/www/MediaCMSApp/ezpublish/cache/* /srv/www/MediaCMSApp/ezpublish_legacy/var/cache/* /srv/www/MediaCMSApp/ezpublish_legacy/var/keolis_base/cache/*
 }
+
