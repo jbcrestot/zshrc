@@ -1,49 +1,11 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/home/jbcrestot/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 ZSH_THEME="agnoster"
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -55,26 +17,9 @@ plugins=(git)
 ## bufix for PhpStorm (keyboard freeze) https://youtrack.jetbrains.com/issue/IDEA-78860
 export IBUS_ENABLE_SYNC_MODE=1
 
-export PATH="/home/jbcrestot/.rvm/gems/ruby-2.2.1/bin:/home/jbcrestot/.rvm/gems/ruby-2.2.1@global/bin:/home/jbcrestot/.rvm/rubies/ruby-2.2.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games::/home/jbcrestot/.rvm/bin:/home/jbcrestot/.rvm/bin:/home/jbcrestot/.local/bin:$HOME/.local/bin:$PATH"
-# export MANPATH="/usr/local/man:$MANPATH"
+export PATH="$HOME/.rvm/gems/ruby-2.2.1/bin:$HOME/.rvm/gems/ruby-2.2.1@global/bin:$HOME/.rvm/rubies/ruby-2.2.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games::$HOME/.rvm/bin:$HOME/.rvm/bin:$HOME/.local/bin:$HOME/.local/bin:$PATH"
 
 source $ZSH/oh-my-zsh.sh
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -129,17 +74,16 @@ alias gsta="git stall"
 
 upAll() {
   if [ $# -eq 0 ]; then
-    echo "pas d'argument, default: dev"
+    echo $fg[blue]"pas d'argument, default: dev"$fg[default]
     branch="dev"
   else
     branch=$1
   fi
 
-  echo "switching everybody to $branch"
-  git fetch origin
-  git checkout $branch
-  git pull origin $branch
-  git submodule foreach "git fetch origin && git checkout $branch && git pull origin $branch"
+  printf $fg[blue]"switching everybody to $branch"
+echo $fg[yellow];git checkout $branch > /dev/null
+printf $fg[white];git pull origin $branch 2> /dev/null;echo $fg[default]
+printf $fg[blue];git submodule foreach "printf $fg[yellow];git checkout $branch > /dev/null && printf $fg[white];git pull origin $branch 2> /dev/null;echo $fg[blue]"
 }
 alias upall=upAll
 
@@ -150,10 +94,10 @@ createAll() {
 
 switchIfExist() {
   if git branch | grep -q $1; then
-    echo "switching to $1"
-    git checkout $1
+    echo $fg[blue]"switching to $1"$fg[default]
+    git checkout $1 > /dev/null
   else
-    echo "pas de branch $1 sur ce repository"
+    echo $fg[red]"pas de branch $1 sur ce repository"$fg[default]
   fi
 }
 
@@ -161,10 +105,10 @@ switchAll() {
   switchIfExist $1
   git submodule foreach "
 if git branch | grep -q $1; then
-    echo '   >>> switching to $1'
-    git checkout $1
+    echo $fg[blue]'   >>> switching to $1'$fg[default]
+    git checkout $1 > /dev/null
   else
-    echo '   xxx pas de branch $1 sur ce repository'
+    echo $fg[red]'   xxx pas de branch $1 sur ce repository'$fg[default]
   fi
 "
 }
@@ -178,7 +122,7 @@ gpr() {
   fi
   print $fg[blue]"Récupération des modifications de la PR "$fg[green]"$2"$fg[blue]" et création de la branche "$fg[green]"$1"$fg[default]
   git fetch origin pull/$2/head:$1
-  git checkout $1
+  git checkout $1 > /dev/null
 }
 
 ## PR finie
@@ -186,7 +130,7 @@ gpro() {
   local BRANCH=$(git symbolic-ref HEAD --short 2> /dev/null)
   if [[ ! -z "$BRANCH" ]] then
     print "Pull Request finie delete la branch $BRANCH"
-    git checkout -
+    git checkout - > /dev/null
     git branch -D $BRANCH
   else
     print "pas de branche"
@@ -211,7 +155,6 @@ debugIbus() {
 }
 
 rmcms() {
-
   rm -rf /srv/www/MediaCMSApp/ezpublish/cache/* /srv/www/MediaCMSApp/ezpublish_legacy/var/cache/* /srv/www/MediaCMSApp/ezpublish_legacy/var/keolis_base/cache/*
 }
 
