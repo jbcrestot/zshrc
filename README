@@ -1,3 +1,7 @@
+** Installation
+I prefer clone the entire repository in my $HOME and create a virtual link to .zshrc
+
+** Theme
 default theme is agnoster
 
 Here some step to use it :
