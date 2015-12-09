@@ -42,13 +42,14 @@ cmd() {
   echo $fg[green]"  debugIbus				"$fg[default]"Tapez cette commande lorsque le clavier ne repond plus (phpstorm)"
   
   echo ""
-  echo $fg[yellow]" Symfony2"
+  echo $fg[yellow]" Symfony2 for CanalTP"
   echo $fg[green]"  cc					"$fg[default]" ca:c equivalent [deprecated]"
   echo $fg[green]"  importTrans				"$fg[default]" maj les trad dans la BDD et dump trad js"
   echo $fg[green]"  boot client				"$fg[default]" bootstrap le design du client \"client\" [deprecated]"
 
   echo ""
   echo $fg[yellow]" git"
+  echo $fg[green]"  gsa                                 "$fg[default]" git stats sur tous les repo"
   echo $fg[green]"  upall branch[default:dev]		"$fg[default]" switch tout le projet sur la br branch"
   echo $fg[green]"  createAll branch			"$fg[default]" créé la branch \"branch\" récursivement sur tous les repos"
   echo $fg[green]"  switchAll branch			"$fg[default]" switch sur la branch \"branch\" si elle existe récusrivement sur tous les repos"
@@ -56,23 +57,31 @@ cmd() {
   echo $fg[green]"  gpro				"$fg[default]" reswitch le répo sur la branch précédante et supprime la branch de la PR"
 }
 
-## Canal TP - Symfony 2
+############################################################### Canal TP - Symfony 2
+# clear cache for nmp
 cc() {
     app/console ca:c --no-warmup --client="$1"
     app/console cache:warmup --client="$1"
 }
 
-importTrans() {
-    app/console lexik:translations:import --force
-    app/console bazinga:js-translation:dump
-    cc $1
+
+# clear cache for the cms
+rmcms() {
+  rm -rf /srv/www/MediaCMSApp/ezpublish/cache/* /srv/www/MediaCMSApp/ezpublish_legacy/var/cache/* /srv/www/MediaCMSApp/ezpublish_legacy/var/keolis_base/cache/*
 }
 
-## Git
-alias uppstream=git fetch origin && (git co $1 ||:) && (git pull origin $1 ||:)
-alias gsta="git stall"
+############################################################### Git
+# Git Status All submodule
+gsa() {
+  printf $fg[blue]"Entrée dans ";git config --get remote.origin.url|grep -P -o "CanalTP.*"|cut -d "/" -f2|cut -d "." -f1;
+  printf $fg[white]"Sur la branch ";git symbolic-ref --short HEAD
+  echo   $fg[white];git st -s
 
-upAll() {
+  echo   $fg[blue];git submodule foreach "printf $fg[white]'Sur la branch ';git symbolic-ref --short HEAD;printf $fg[default];git st -s;echo $fg[blue];"
+}
+
+# Update all submodule (git pull)
+upall() {
   if [ $# -eq 0 ]; then
     echo $fg[blue]"pas d'argument, default: dev"$fg[default]
     branch="dev"
@@ -81,17 +90,18 @@ upAll() {
   fi
 
   printf $fg[blue]"switching everybody to $branch"
-echo $fg[yellow];git checkout $branch > /dev/null
-printf $fg[white];git pull origin $branch 2> /dev/null;echo $fg[default]
-printf $fg[blue];git submodule foreach "printf $fg[yellow];git checkout $branch > /dev/null && printf $fg[white];git pull origin $branch 2> /dev/null;echo $fg[blue]"
+  echo $fg[yellow];git checkout $branch > /dev/null
+  printf $fg[white];git pull origin $branch 2> /dev/null;echo $fg[default]
+  printf $fg[blue];git submodule foreach "printf $fg[yellow];git checkout $branch > /dev/null && printf $fg[white];git pull origin $branch 2> /dev/null;echo $fg[blue]"
 }
-alias upall=upAll
 
+# create $branch on all submodule
 createAll() {
   git checkout -b $1
   git submodule foreach "git checkout -b $1"
 }
 
+# Switch current repository into $branch
 switchIfExist() {
   if git branch | grep -q $1; then
     echo $fg[blue]"switching to $1"$fg[default]
@@ -101,6 +111,7 @@ switchIfExist() {
   fi
 }
 
+# Switch All submodule into $branch
 switchAll() {
   switchIfExist $1
   git submodule foreach "
@@ -113,7 +124,8 @@ if git branch | grep -q $1; then
 "
 }
 
-## recup des modifs d'une PR
+############################################ Travail sur les PR
+# Git Pull Request
 gpr() {
   if [ $# -lt 2 ]; then
     echo $fg[red]"wrong number of arguments"
@@ -125,7 +137,7 @@ gpr() {
   git checkout $1 > /dev/null
 }
 
-## PR finie
+# Git Pull Request Over
 gpro() {
   local BRANCH=$(git symbolic-ref HEAD --short 2> /dev/null)
   if [[ ! -z "$BRANCH" ]] then
@@ -147,6 +159,7 @@ boot() {
   cd $fromDir
 }
 
+############################################ Php Storm
 debugIbus() {
   ibus-daemon -rd
   echo "plz type the following :"
