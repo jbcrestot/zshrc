@@ -50,7 +50,7 @@ cmd() {
   echo ""
   echo $fg[yellow]" git"
   echo $fg[green]"  gsa                                 "$fg[default]" git stats sur tous les repo"
-  echo $fg[green]"  upall branch[default:dev]		"$fg[default]" switch tout le projet sur la br branch"
+  echo $fg[green]"  upall branch[default:dev]		"$fg[default]" switch tout le projet sur la branch br"
   echo $fg[green]"  createAll branch			"$fg[default]" créé la branch \"branch\" récursivement sur tous les repos"
   echo $fg[green]"  switchAll branch			"$fg[default]" switch sur la branch \"branch\" si elle existe récusrivement sur tous les repos"
   echo $fg[green]"  gpr numéroPR nomBranch		"$fg[default]" switch un repo sur la pr \"numéroPR\" en créant la branch \"nomBranch\""
@@ -98,7 +98,7 @@ upall() {
 # create $branch on all submodule
 createAll() {
   git checkout -b $1
-  git submodule foreach "git checkout -b $1"
+  git submodule foreach "git checkout -B $1"
 }
 
 # Switch current repository into $branch
