@@ -18,6 +18,7 @@ plugins=(git)
 export IBUS_ENABLE_SYNC_MODE=1
 
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:$HOME/.rvm/bin:$HOME/.local/bin:$PATH"
+export PATH="/usr/bin/mongodb/mongodb-linux-x86_64-3.2.0/bin/:$PATH"
 
 source $ZSH/oh-my-zsh.sh
 
