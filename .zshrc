@@ -54,7 +54,7 @@ cmd() {
   echo $fg[green]"  upall branch[default:dev]		"$fg[default]" switch tout le projet sur la branch br"
   echo $fg[green]"  createAll branch			"$fg[default]" créé la branch \"branch\" récursivement sur tous les repos"
   echo $fg[green]"  switchAll branch			"$fg[default]" switch sur la branch \"branch\" si elle existe récusrivement sur tous les repos"
-  echo $fg[green]"  gpr numéroPR nomBranch		"$fg[default]" switch un repo sur la pr \"numéroPR\" en créant la branch \"nomBranch\""
+  echo $fg[green]"  gpr numéroPR nomBranch		"$fg[default]" switch un repo sur la pr \"numéroPR\" en créant la branch \"nomBranch\" ; si la branch existant déjà, on la met à jour"
   echo $fg[green]"  gpro				"$fg[default]" reswitch le répo sur la branch précédante et supprime la branch de la PR"
 }
 
@@ -133,6 +133,13 @@ gpr() {
     echo $fg[green]"grp "branch_name" "$fg[blue]"PR_number" $fg[default]"où branch_name le nom de la branch qui sera créé et PR_number est le numéro de Pull Request"
     return
   fi
+
+  ## if current branch equal asked branch, we delete it to update the br
+  local BRANCH=$(git symbolic-ref HEAD --short 2> /dev/null)
+  if [ $BRANCH = $1 ]; then
+    gpro
+  fi
+
   print $fg[blue]"Récupération des modifications de la PR "$fg[green]"$2"$fg[blue]" et création de la branche "$fg[green]"$1"$fg[default]
   git fetch origin pull/$2/head:$1
   git checkout $1 > /dev/null
@@ -169,7 +176,10 @@ debugIbus() {
 }
 
 rmcms() {
-  rm -rf /srv/www/MediaCMSApp/ezpublish/cache/* /srv/www/MediaCMSApp/ezpublish_legacy/var/cache/* /srv/www/MediaCMSApp/ezpublish_legacy/var/keolis_base/cache/*
+  rm -rf /srv/www/MediaCMSApp/ezpublish/cache/* 
+  rm -rf /srv/www/MediaCMSApp/ezpublish_legacy/var/cache/*
+  rm -rf /srv/www/MediaCMSApp/ezpublish_legacy/var/keolis_base/cache/*
+  rm -rf /srv/www/MediaCMSApp/ezpublish_legacy/var/keolis_star/cache/*
 }
 
 str () {
