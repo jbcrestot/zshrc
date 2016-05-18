@@ -1,5 +1,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
+export USE_NFS=true
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -30,6 +31,7 @@ alias ll="ls -alhF --color"
 alias ww="cd /srv/www/"
 alias nmp="cd /srv/www/Nmp/"
 alias vh="cd /etc/apache2/sites-available/"
+alias composer="php -n -d extension=json.so /usr/local/bin/composer.phar"
 
 # liste des alias visiable via l'alias cmd
 cmd() {
@@ -201,4 +203,8 @@ str () {
 
 fgd(){
 echo $fg[blue]$bg[grey]"test"
+}
+
+launchTF2(){
+  /home/tf2/server/srcds_run -game tf +randommap -insecure
 }
