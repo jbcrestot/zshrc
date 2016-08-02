@@ -1,6 +1,7 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 export USE_NFS=true
+export WWW=/var/www
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -18,18 +19,19 @@ plugins=(git)
 ## bufix for PhpStorm (keyboard freeze) https://youtrack.jetbrains.com/issue/IDEA-78860
 export IBUS_ENABLE_SYNC_MODE=1
 
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:$HOME/.rvm/bin:$HOME/.local/bin:$PATH"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:$HOME/.local/bin:$PATH"
 export PATH="/usr/bin/mongodb/mongodb-linux-x86_64-3.2.0/bin/:$PATH"
 
 source $ZSH/oh-my-zsh.sh
+source ~/.rvm/scripts/rvm
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 alias ll="ls -alhF --color"
-alias ww="cd /srv/www/"
-alias nmp="cd /srv/www/Nmp/"
+alias ww="cd $WWW"
+alias nmp="cd $WWW/Nmp/"
 alias vh="cd /etc/apache2/sites-available/"
 alias composer="php -n -d extension=json.so /usr/local/bin/composer.phar"
 
@@ -39,8 +41,8 @@ cmd() {
 
   echo $fg[yellow]" system"
   echo $fg[green]"  ll					"$fg[default]"liste tous les éléments du dossier courant"
-  echo $fg[green]"  ww					"$fg[default]"va dans le dossier /srv/www/"
-  echo $fg[green]"  nmp					"$fg[default]"va dans le dossier /srv/www/Nmp/"
+  echo $fg[green]"  ww					"$fg[default]"va dans le dossier contenant vos projets"
+  echo $fg[green]"  nmp					"$fg[default]"va dans le dossier Nmp"
   echo $fg[green]"  vh					"$fg[default]"va dans le dossier /etc/apache2/sites-available/"
   echo $fg[green]"  debugIbus				"$fg[default]"Tapez cette commande lorsque le clavier ne repond plus (phpstorm)"
   
@@ -49,6 +51,10 @@ cmd() {
   echo $fg[green]"  cc					"$fg[default]" ca:c equivalent [deprecated]"
   echo $fg[green]"  importTrans				"$fg[default]" maj les trad dans la BDD et dump trad js"
   echo $fg[green]"  boot client				"$fg[default]" bootstrap le design du client \"client\" [deprecated]"
+
+  echo ""
+  echo $fg[yellow]" All CanalTP"
+  echo $fg[green]"  rmcms				"$fg[default]" remove all CMS cache"
 
   echo ""
   echo $fg[yellow]" git"
@@ -70,7 +76,9 @@ cc() {
 
 # clear cache for the cms
 rmcms() {
-  rm -rf /srv/www/MediaCMSApp/ezpublish/cache/* /srv/www/MediaCMSApp/ezpublish_legacy/var/cache/* /srv/www/MediaCMSApp/ezpublish_legacy/var/keolis_base/cache/*
+  rm -rf /srv/www/MediaCMSApp/ezpublish/cache/* 
+         /srv/www/MediaCMSApp/ezpublish_legacy/var/cache/* 
+	 /srv/www/MediaCMSApp/ezpublish_legacy/var/keolis_base/cache/*
 }
 
 ############################################################### Git
@@ -178,11 +186,9 @@ debugIbus() {
 }
 
 rmcms() {
-  rm -rf /srv/www/MediaCMSApp/ezpublish/cache/* 
-  rm -rf /srv/www/MediaCMSApp/ezpublish_legacy/var/cache/*
-  rm -rf /srv/www/MediaCMSApp/ezpublish_legacy/var/keolis_base/cache/*
-  rm -rf /srv/www/MediaCMSApp/ezpublish_legacy/var/keolis_star/cache/*
+  rm -rf /srv/www/MediaCMSApp/ezpublish/cache/* /srv/www/MediaCMSApp/ezpublish_legacy/var/cache/* /srv/www/MediaCMSApp/ezpublish_legacy/var/keolis_base/cache/*
 }
+
 
 str () {
 
