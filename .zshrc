@@ -1,7 +1,5 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
-export USE_NFS=true
-export WWW=/var/www
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -19,11 +17,16 @@ plugins=(git)
 ## bufix for PhpStorm (keyboard freeze) https://youtrack.jetbrains.com/issue/IDEA-78860
 export IBUS_ENABLE_SYNC_MODE=1
 
+# export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:$HOME/.rvm/bin:$HOME/.local/bin:$PATH"
+
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:$HOME/.local/bin:$PATH"
 export PATH="/usr/bin/mongodb/mongodb-linux-x86_64-3.2.0/bin/:$PATH"
 
+
 source $ZSH/oh-my-zsh.sh
-source ~/.rvm/scripts/rvm
+source $HOME/.rvm/scripts/rvm
+# allow customization
+source $HOME/zshrc/const.sh
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -32,8 +35,12 @@ source ~/.rvm/scripts/rvm
 alias ll="ls -alhF --color"
 alias ww="cd $WWW"
 alias nmp="cd $WWW/Nmp/"
-alias vh="cd /etc/apache2/sites-available/"
-alias composer="php -n -d extension=json.so /usr/local/bin/composer.phar"
+alias vh="cd $virtual_host_dir"
+alias composer="composer.phar"
+# Load xdebug Zend extension with php command
+alias php='php -dzend_extension=xdebug.so'
+# PHPUnit needs xdebug for coverage. In this case, just make an alias with php command prefix.
+alias phpunit='php ~/.composer/vendor/bin/phpunit'
 
 # liste des alias visiable via l'alias cmd
 cmd() {
@@ -66,7 +73,18 @@ cmd() {
   echo $fg[green]"  gpro				"$fg[default]" reswitch le répo sur la branch précédante et supprime la branch de la PR"
 }
 
-############################################################### Canal TP - Symfony 2
+############################################################### Canal TP specific
+# usefull after creation of new declination
+boot() {
+  echo "bootstraping the app for $1"
+  fromDir=$(pwd)
+  nmp
+  app/console assets:install --client="$1"
+  app/console assetic:dump --client="$1"
+  cc $1
+  cd $fromDir
+}
+
 # clear cache for nmp
 cc() {
     app/console ca:c --no-warmup --client="$1"
@@ -81,7 +99,8 @@ rmcms() {
 	 /srv/www/MediaCMSApp/ezpublish_legacy/var/keolis_base/cache/*
 }
 
-############################################################### Git
+
+############################################################### Git submodule
 # Git Status All submodule
 gsa() {
   printf $fg[blue]"Entrée dans ";git config --get remote.origin.url|grep -P -o "CanalTP.*"|cut -d "/" -f2|cut -d "." -f1;
@@ -135,7 +154,7 @@ if git branch | grep -q $1; then
 "
 }
 
-############################################ Travail sur les PR
+############################################ git Pull Request
 # Git Pull Request
 gpr() {
   if [ $# -lt 2 ]; then
@@ -167,15 +186,6 @@ gpro() {
   fi
 }
 
-boot() {
-  echo "bootstraping the app for $1"
-  fromDir=$(pwd)
-  nmp
-  app/console assets:install --client="$1"
-  app/console assetic:dump --client="$1"
-  cc $1
-  cd $fromDir
-}
 
 ############################################ Php Storm
 debugIbus() {
@@ -185,32 +195,3 @@ debugIbus() {
   echo "use mouse middle click"
 }
 
-rmcms() {
-  rm -rf /srv/www/MediaCMSApp/ezpublish/cache/* /srv/www/MediaCMSApp/ezpublish_legacy/var/cache/* /srv/www/MediaCMSApp/ezpublish_legacy/var/keolis_base/cache/*
-}
-
-
-str () {
-
- echo "
-    ____________       ____    ____       ____               ___________       ___________       ___________       ____    ____       ___________        ____    ____       ____________ 
-   /\           \     /\   \  /\   \     /\   \             /\          \     /\          \     /\          \     /\   \  /\   \     /\          \      /\   \  /\   \     /\   \       \ 
-   \ \    _______\    \ \   \ \ \   \    \ \   \            \ \    ______\    \ \    ___   \    \ \___    ___\    \ \   \ \ \   \    \ \    ______\     \ \   \ \ \   \    \ \   \____   \ 
-    \ \   \\"$bg[grey]"______"$bg[default]"/     \ \   \ \ \   \    \ \   \            \ \   \\"$bg[grey]"_____"$bg[default]"/     \ \   \_/\   \    \\"$bg[grey]"/__"$bg[default]"/\   \\"$bg[grey]"__"$bg[default]"/     \ \   \ \ \   \    \ \   \\"$bg[grey]"_____"$bg[default]"/      \ \   \ \ \   \    \ \   \\"$bg[grey]"__"$bg[default]"/\   \ 
-     \ \   \________    \ \   \ \ \   \    \ \   \            \ \   \____       \ \   \__\   \       \ \   \        \ \   \ \ \   \    \ \   \____        \ \   \ \ \   \    \ \   \_\_\   \ 
-      \ \           \    \ \   \ \ \   \    \ \   \            \ \       \       \ \          \       \ \   \        \ \   \ \ \   \    \ \       \        \ \   \ \ \   \    \ \   \       \ 
-       \ \________   \    \ \   \ \ \   \    \ \   \            \ \    ___\       \ \    ___   \       \ \   \        \ \   \ \ \   \    \ \    ___\        \ \   \ \ \   \    \ \   \_______\ 
-        \\"$bg[grey]"/________"$bg[default]"\   \    \ \   \ \ \   \    \ \   \            \ \   \__/        \ \   \\\\\\ \   \       \ \   \        \ \   \ \ \   \    \ \   \__/         \ \   \ \ \   \    \ \   \ \   \ 
-            _______\   \    \ \   \_\_\   \    \ \   \________    \ \   \           \ \   \\\\\\ \   \       \ \   \        \ \   \_\_\   \    \ \   \______      \ \   \_\_\   \    \ \   \ \   \ 
-           /\           \    \ \           \    \ \           \    \ \   \           \ \   \\\\\\ \   \       \ \   \        \ \           \    \ \         \      \ \           \    \ \   \ \   \ 
-           \ \___________\    \ \___________\    \ \___________\    \ \___\           \ \___\\\\\\ \___\       \ \___\        \ \___________\    \ \_________\      \ \___________\    \ \___\ \___\ 
-            \\"$bg[grey]"/___________"$bg[default]"/     \\"$bg[grey]"/___________"$bg[default]"/     \\"$bg[grey]"/___________"$bg[default]"/     \/___/            \/___/ \/___/        \/___/         \/___________/     \/_________/       \/___________/     \/___/\/___/ 
-"}
-
-fgd(){
-echo $fg[blue]$bg[grey]"test"
-}
-
-launchTF2(){
-  /home/tf2/server/srcds_run -game tf +randommap -insecure
-}
