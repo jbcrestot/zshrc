@@ -1,11 +1,9 @@
-## your project directory
-export WWW=/var/www
 
-## path to your composer bin
-export composer_dir=/usr/local/bin/composer
+## xcode folder
+export xcode_folder=/Applications/xcodeall/Xcode_10_2.app
 
-## your virtual hosts directory
-export virtual_host_dir=/etc/apache2/sites-available/
+# iTMS Transporter
+export itms_folder=$xcode_folder/Contents/Applications/Application\ Loader.app/Contents/itms/bin
 
 ## use following line to add very specific file
 source $HOME/zshrc/.zshrc_profile
