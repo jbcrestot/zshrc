@@ -1,9 +1,16 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block, everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 export GITHUB_ACCESS_TOKEN=83e2ac5308ddf74c4179ce1acb80ec866d0153c6
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
-ZSH_THEME="powerlevel9k/powerlevel9k"
+ZSH_THEME=""powerlevel10k/powerlevel10k
 POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(battery dir_writable time)
 
@@ -15,11 +22,10 @@ export NVM_DIR="$HOME/.nvm"
 #nvm use 8.11.3
 
 source $ZSH/oh-my-zsh.sh
-source ~/.commonprofile
 # allow customization
 source $HOME/zshrc/const.sh
 
-eval "$(rbenv init -)"
+#eval "$(rbenv init -)"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -146,24 +152,6 @@ gpro() {
   fi
 }
 
-# Launch iOS simulator
-function sim() {
-  print "simulator launching"
-  $xcode_folder/Contents/Developer/Applications/Simulator.app/Contents/MacOS/Simulator
-}
-
-function grrr() {
-print 'grrrr'
-}
-# display provider list
-function itunesProvider() {
-  print "launching search for iTMS transporter"
-  $itms_folder/iTMSTransporter -m provider -u 'mobile@canaltp.fr' -p 'M0bilectp' -account_type itunes_connect
-}
-
-alias cc="print \"Clear Cache will remove rncache and CocoaPods cache\";rm -rf ~/.rncache ~/Library/Caches/CocoaPods;"
-
-
 LOCAL_DIR="local"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 [ -d "$DIR/$LOCAL_DIR" ] && echo  'yes'
@@ -175,3 +163,6 @@ if [ -d "$DIR/zshrc/$LOCAL_DIR" ]; then
 fi
 
 export PATH="/usr/local/sbin:$PATH"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
