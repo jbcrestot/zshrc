@@ -1,2 +1,0 @@
-export MATCH_PASSWORD=""
-export KEYCHAIN_PASSWORD=""

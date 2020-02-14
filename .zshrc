@@ -7,12 +7,9 @@ fi
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
-export GITHUB_ACCESS_TOKEN=83e2ac5308ddf74c4179ce1acb80ec866d0153c6
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 ZSH_THEME=""powerlevel10k/powerlevel10k
-POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(battery dir_writable time)
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 plugins=(git)
@@ -162,7 +159,15 @@ if [ -d "$DIR/zshrc/$LOCAL_DIR" ]; then
 	source "$DIR/zshrc/$LOCAL_DIR/custom.sh"
 fi
 
-export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/sbin:/Users/jean-baptiste.crestot/Library/Python/3.7/bin:$PATH"
+export HAPPSTACK_HOME="/Users/jean-baptiste.crestot/happstack"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/jean-baptiste.crestot/soft/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/jean-baptiste.crestot/soft/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/jean-baptiste.crestot/soft/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jean-baptiste.crestot/soft/google-cloud-sdk/completion.zsh.inc'; fi
