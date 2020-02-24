@@ -1,32 +1,43 @@
+export COLOR_NC='\e[0m' # No Color
+export COLOR_BLACK='\e[0;30m'
+export COLOR_RED='\e[0;31m'
+export COLOR_LIGHT_RED='\e[1;31m'
+export COLOR_GREEN='\e[0;32m'
+export COLOR_LIGHT_GREEN='\e[1;32m'
+export COLOR_YELLOW='\e[0;33m'
+export COLOR_LIGHT_YELLOW='\e[1;33m'
+export COLOR_BLUE='\e[0;34m'
+export COLOR_LIGHT_BLUE='\e[1;34m'
+export COLOR_PURPLE='\e[0;35m'
+export COLOR_LIGHT_PURPLE='\e[1;35m'
+export COLOR_CYAN='\e[0;36m'
+export COLOR_LIGHT_CYAN='\e[1;36m'
+export COLOR_GRAY='\e[0;37m'
+export COLOR_WHITE='\e[1;37m'
+
 
 # liste des alias visiable via l'alias cmd
 cmd() {
   clear
 
-  print " \e[0;33malias"
-  print "  \e[0;32mpépé                         \e[0;37mgo to Provisioning Profiles folder"
-  print "  \e[0;32mproj                         \e[0;37mgo to Prjects folder"
+  print " "$COLOR_YELLOW"alias"
+  print " "$COLOR_GREEN"pépé                         "$COLOR_GRAY"go to Provisioning Profiles folder"
+  print " "$COLOR_GREEN"proj                         "$COLOR_GRAY"go to Prjects folder"
   print ""
 
-  echo " \e[0;33msystem"
-  echo "  \e[0;32mww                           \e[0;37mva dans le dossier contenant vos projets"
+  echo " "$COLOR_YELLOW"system"
+  echo " "$COLOR_GREEN"ww                           "$COLOR_GRAY"va dans le dossier contenant vos projets"
   
   echo ""
-  echo " \e[0;33mgit"
-  echo "  \e[0;32mfap                          \e[0;37mgit fetch --all --prune && git pull --rebase"
-  echo "  \e[0;32mgpr PRnumber branchName     \e[0;37m switch repo pr \"numéroPR\" en créant la branch \"nomBranch\" ; si la branch existant déjà, on la met à jour"
-  echo "  \e[0;32mgpro                        \e[0;37m reswitch le répo sur la branch précédante et supprime la branch de la PR"
+  echo " "$COLOR_YELLOW"git"
+  echo " "$COLOR_GREEN"fap                          "$COLOR_GRAY"git fetch --all --prune && git pull --rebase"
+  echo " "$COLOR_GREEN"gpr PRnumber branchName     "$COLOR_GRAY" switch repo pr \"numéroPR\" en créant la branch \"nomBranch\" ; si la branch existant déjà, on la met à jour"
+  echo " "$COLOR_GREEN"gpro                        "$COLOR_GRAY" reswitch le répo sur la branch précédante et supprime la branch de la PR"
 
   echo ""
-  echo " \e[0;33mmobile"
-  echo "  \e[0;32msim                         \e[0;37m launch last iOS simulator"
+  echo " "$COLOR_YELLOW"mobile"
+  echo " "$COLOR_GREEN"sim                         "$COLOR_GRAY" launch last iOS simulator"
 }
-
-# \e[0;31m red
-# \e[0;32m green
-# \e[0;36m cyan
-# \e[0;33m yellow
-# \e[0;37m gris
 
 # For a full list of active aliases, run `alias`.
 alias ww="cd $WWW"
@@ -36,33 +47,33 @@ alias proj="cd ~/Projects"
 ############################################################### Git shortcut
 # Fetch --all -prune && pull
 fap() {
-  printf "\e[0;36mgit fetch --all --prune \e[0;32mthen \e[0;36mgit pull --rebase\e[0;37m"
+  printf ""$COLOR_CYAN"git fetch --all --prune "$COLOR_GREEN"then "$COLOR_CYAN"git pull --rebase"$COLOR_GRAY
   print $fg[default];
   git fetch --all --prune && git pull --rebase
 }
 
 test() {
-  print -P "\e[1;33mtest \e[0;32m un peu de gris \e[0;37m encore plus clair"
+  print -P ""$COLOR_LIGHT_YELLOW"test "$COLOR_GREEN" un peu de gris "$COLOR_GRAY" encore plus clair"
 }
 
 ############################################ git Pull Request
 # Git Pull Request
 gpr() {
   if [ $# -lt 2 ]; then
-    print "  \e[0;31mwrong number of arguments"
-    print "  \e[0;36mgpr \e[0;32m\"branch_name\" \"PR_number\" \e[0;37moù branch_name le nom de la branch qui sera créé et PR_number est le numéro de Pull Request"
+    print "  "$COLOR_RED"wrong number of arguments"
+    print "  "$COLOR_CYAN"gpr "$COLOR_GREEN"\"branch_name\" \"PR_number\" "$COLOR_GRAY"où branch_name le nom de la branch qui sera créé et PR_number est le numéro de Pull Request"
     return
   fi
 
   ## if current branch equal asked branch, we delete it to update the br
   local BRANCH=$(git symbolic-ref HEAD --short 2> /dev/null)
   if [ $BRANCH = $1 ]; then
-    print "  \e[1;33mBranch $1 already exist"
+    print "  "$COLOR_LIGHT_YELLOW"Branch $1 already exist"
     gpro
   fi
 
 
-  print "  \e[0;36mRécupération des modifications de la PR \e[0;32m$2 \e[0;36met création de la branche \e[0;32m$1\e[0;37m"
+  print "  "$COLOR_CYAN"Récupération des modifications de la PR "$COLOR_GREEN$2" "$COLOR_CYAN"et création de la branche "$COLOR_GREEN$1$COLOR_GRAY
   git fetch origin pull/$2/head:$1
   git checkout $1 > /dev/null
 }
@@ -74,6 +85,6 @@ gpro() {
     git checkout master > /dev/null
     git branch -D $BRANCH
   else
-    print "  \e[0;36mpas de branche"
+    print "  "$COLOR_CYAN"pas de branche"
   fi
 }
