@@ -33,6 +33,7 @@ cmd() {
   echo " "$COLOR_GREEN"fap                          "$COLOR_GRAY"git fetch --all --prune && git pull --rebase"
   echo " "$COLOR_GREEN"gpr PRnumber branchName     "$COLOR_GRAY" switch repo pr \"numéroPR\" en créant la branch \"nomBranch\" ; si la branch existant déjà, on la met à jour"
   echo " "$COLOR_GREEN"gpro                        "$COLOR_GRAY" reswitch le répo sur la branch précédante et supprime la branch de la PR"
+  echo " "$COLOR_GREEN"gif your-url?               "$COLOR_GRAY" remind you the syntax for adding gif into github"
 
   echo ""
   echo " "$COLOR_YELLOW"mobile"
@@ -43,6 +44,8 @@ cmd() {
 alias ww="cd $WWW"
 alias pépé="cd ~/Library/MobileDevice/Provisioning\ Profiles/"
 alias proj="cd ~/Projects"
+alias n="npm run"
+alias nt="npm run test"
 
 ############################################################### Git shortcut
 # Fetch --all -prune && pull
@@ -87,4 +90,28 @@ gpro() {
   else
     print "  "$COLOR_CYAN"pas de branche"
   fi
+}
+
+# reminder for gif in github page
+gif() {
+  if [ $# -lt 1 ]; then
+    print "  "$COLOR_CYAN"![]("$COLOR_GREEN"your-url"$COLOR_CYAN")"$COLOR_GRAY" your-url represent the url of your gif"
+    return
+  fi
+
+  print "  "$COLOR_CYAN"![]("$1")"
+  echo "![]("$1")" | pbcopy
+}
+
+######################################## happn
+# appa
+appaLikeMe () {
+  if [ $# -lt 1 ]; then
+    print "  "$COLOR_RED"missing target_id"
+    print "  "$COLOR_CYAN"appaLikeMe "$COLOR_GREEN"\"target_id\" "$COLOR_GRAY"où target_id est l'id de l'utilisateur qui va me like"
+    return
+  fi
+
+  print "appa like $1 me"
+  appa like $1 dc04dc88-2126-4f58-b04f-7509b717dfce
 }
