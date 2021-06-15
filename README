@@ -1,12 +1,13 @@
 ** Installation
-I prefer clone the entire repository in my $HOME and create a virtual link to .zshrc
+
+- install oh my zsh
+
+- clone the repository in $HOME and replace ~/.zshrc with symbolic link from ~/zshrc/.zshrc
+
+- touch ~/zshrc/local/custom.sh
+(put here, the very specific things on this computer)
 
 ** Theme
-default theme is agnoster
+default theme is powerlevel10k
 
-Here some step to use it :
-install zsh
-install oh my zsh
-install powerline : https://powerline.readthedocs.org/en/latest/installation/linux.html#font-installation
-
-
+install power10k zsh theme : https://github.com/romkatv/powerlevel10k
