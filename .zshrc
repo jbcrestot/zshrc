@@ -4,7 +4,7 @@
 # this need to be before instant prompt to be executed
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # load custom local const
-source "$DIR/local/custom.sh"
+source "$HOME/zshrc/local/custom.sh"
 # ---- end of early initialization ----
 
 # ---- start of p10k initialization ----
@@ -25,9 +25,9 @@ export ZSH=$HOME/.oh-my-zsh
 plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
-source $DIR/helper.sh # load helping command -> to see them type `cmd`
+source $HOME/zshrc/helper.sh # load helping command -> to see them type `cmd`
 # customization initialization
-source $DIR/local/const.sh # load common constants
+source $HOME/zshrc/local/const.sh # load common constants
 
 # nvm setup
 export NVM_DIR="$HOME/.nvm"
