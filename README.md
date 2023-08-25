@@ -49,3 +49,13 @@ Dedicated files for local installation
 
 - local/custom.sh contain command needed for specific softwares
 - const.sh contain exports and other constants
+
+## karabiner for keychrone k6
+
+click karabiner icon > settings
+In virtual keyboard, you should have ANSI (it's physical keyboard layout)
+click Misc > open config folder and cc karabiner.json in this folder
+then Quit, Restart > Restart karabiner-element
+
+In mac settings, click on keyboards > under "Text Input", modify "Méthodes de saisie"
+click + and add "Français - PC", then cilck "Français" and -
